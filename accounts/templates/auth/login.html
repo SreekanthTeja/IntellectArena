@@ -1,0 +1,36 @@
+ 
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" id="login-form">
+    {% csrf_token %}
+    <div id="form-container">
+        {{form}}
+    </div>
+    <button class="btn btn-outline-info" type="submit">Login</button>
+</form>
+Don't have an account? <a href="{% url 'signup' %}" target="blank"><strong>register here</strong></a>!    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+document.getElementById("login-form").addEventListener("submit", function(event){
+    event.preventDefault()
+    console.log($('#login-form').serializeArray());
+    $.ajax({
+        type: "POST",
+        url: "{% url 'signin' %}",
+        data: $('#login-form').serializeArray(),
+        success: function(response) {
+            console.log(response)
+             
+            if (response=="error") {
+                alert("Username or password incorrect");
+            } else {
+                alert("You are Logged in ");
+                window.location.replace('/')
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

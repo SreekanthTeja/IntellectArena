@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <title>Django</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+</head>
+<body>
+    <nav class="nav-wrapper blue darken-3">
+            <div class="container">
+                <a class="brand-logo" href="/">{{user.username|title}}</a>
+                <ul class="right">
+                    {% if user.is_authenticated %}
+                    <li><a href='/' >Home</a></li>
+                    
+                    <li><a href="{% url 'signout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'signup' %}">SignUp</a></li>
+                    <li><a href="{% url 'signin' %}" >Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script>M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});</script>
+            {% elif message.tags == 'info'%}
+                <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+            {% elif message.tags == 'warning'%}
+                <script>M.toast({html: "{{message}}", classes: 'orange rounded', displayLength:10000});</script>
+            {% elif message.tags == 'error'%}
+                <script>M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});</script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+</body>
+</html>
